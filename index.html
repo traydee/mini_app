@@ -1,34 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Telegram Bot Control Panel</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Телеграмм-Приложение</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.input-container {
+  margin-bottom: 10px;
+}
+
+.input-container input[type="text"] {
+  width: 70%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-container button {
+  padding: 8px 15px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.messages-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.messages-container p {
+  background-color: #f9f9f9;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  display: inline-block;
+}
+</style>
 </head>
 <body>
-  <h1>Управление ботом</h1>
-  <form id="messageForm">
+<div class="container">
+  <h2>Телеграмм-Приложение</h2>
+  <div class="messages-container" id="messagesContainer"></div>
+  <div class="input-container">
     <input type="text" id="messageInput" placeholder="Введите сообщение">
-    <button type="submit">Отправить</button>
-  </form>
+    <button onclick="sendMessage()">Отправить</button>
+  </div>
+</div>
 
-  <script>
-    document.getElementById('messageForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const message = document.getElementById('messageInput').value;
-      fetch('/sendMessage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: message })
-      }).then(response => {
-        console.log('Message sent successfully');
-      }).catch(error => {
-        console.error('Error sending message:', error);
-      });
-    });
-  </script>
+<script>
+function sendMessage() {
+  var messageInput = document.getElementById("messageInput");
+  var message = messageInput.value;
+  if (message.trim() !== "") {
+    var messagesContainer = document.getElementById("messagesContainer");
+    var messageElement = document.createElement("p");
+    messageElement.textContent = message;
+    messagesContainer.appendChild(messageElement);
+    messageInput.value = "";
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+}
+</script>
 </body>
 </html>
